@@ -1,0 +1,5 @@
+Pillow
+pulsectl
+pystray
+vext
+vext.gi
