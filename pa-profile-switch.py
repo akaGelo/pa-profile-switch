@@ -1,27 +1,13 @@
-## pip install pulsectl
-## pip install Pillow pystray 
-# pacman -S   libayatana-appindicato для трея
-# apt install python3-gi
-
-## for dev
-# pip install vext
-# pip install vext.gi
-###
-import io
-
-# ---
 import base64
+import io
 import logging
 import sys
-
-from pulsectl import pulsectl
 from threading import Thread
+
 import pulsectl
 from PIL import Image, ImageDraw, ImageFont
-
+from pulsectl import pulsectl
 from pystray import Icon, Menu, MenuItem
-
-import logging
 
 log = logging.getLogger("pa-profile-switch")
 log.setLevel(logging.INFO)
@@ -43,7 +29,7 @@ class HeadphonesIndicator:
         items = []
         for profile in card.profile_list:
             is_active = '✓' if card.profile_active.description == profile.description else ''
-            menu_item = MenuItem(f'{profile.description} {is_active}',
+            menu_item = MenuItem(f'{profile.name} {is_active}',
                                  lambda icon, item: self.__set_profile(icon, item))
             menu_item.profile = profile
             items.append(menu_item)
@@ -119,6 +105,7 @@ def _connect_card(card_index: int):
         card_indicator = HeadphonesIndicator(card)
         __card_indicators[card_index] = card_indicator
         card_indicator.start()
+        card_indicator.set_as_default()
         log.info(f'Connected {description} {device_string}')
 
 
